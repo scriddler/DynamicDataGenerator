@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicDataGenerator", "DynamicDataGenerator\DynamicDataGenerator.csproj", "{7C5263DD-9064-4E27-A04D-9ADD2CCCC797}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicSQLConnector", "SQLConnector\DynamicSQLConnector.csproj", "{60A14A6F-C9DF-44FD-86E3-41C0660F3A72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicExcelReader", "DynamicExcelReader\DynamicExcelReader.csproj", "{EE843A91-4E8D-4D51-8C97-AA2BED0DB12C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7C5263DD-9064-4E27-A04D-9ADD2CCCC797}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C5263DD-9064-4E27-A04D-9ADD2CCCC797}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C5263DD-9064-4E27-A04D-9ADD2CCCC797}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60A14A6F-C9DF-44FD-86E3-41C0660F3A72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60A14A6F-C9DF-44FD-86E3-41C0660F3A72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60A14A6F-C9DF-44FD-86E3-41C0660F3A72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60A14A6F-C9DF-44FD-86E3-41C0660F3A72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE843A91-4E8D-4D51-8C97-AA2BED0DB12C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE843A91-4E8D-4D51-8C97-AA2BED0DB12C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE843A91-4E8D-4D51-8C97-AA2BED0DB12C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE843A91-4E8D-4D51-8C97-AA2BED0DB12C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

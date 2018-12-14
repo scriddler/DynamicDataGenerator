@@ -54,6 +54,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -75,6 +78,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DynamicExcelReader\DynamicExcelReader.csproj">
+      <Project>{ee843a91-4e8d-4d51-8c97-aa2bed0db12c}</Project>
+      <Name>DynamicExcelReader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SQLConnector\DynamicSQLConnector.csproj">
+      <Project>{60a14a6f-c9df-44fd-86e3-41c0660f3a72}</Project>
+      <Name>DynamicSQLConnector</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
