@@ -9,27 +9,34 @@ namespace DynamicSQLConnector
 {
     public class DynamicSQLConnection
     {
-        private SqlConnection _sqlConnection;
+        private SqlConnection _sqlConnectionSource;
+        private SqlConnection _sqlConnectionTarget;
 
-        public DynamicSQLConnection(string connectionString)
+        public DynamicSQLConnection(string connectionStringTarget, string connectionStringSource)
         {
-            _sqlConnection = new SqlConnection(connectionString);
+            _sqlConnectionTarget = new SqlConnection(connectionStringTarget);
+            _sqlConnectionSource = new SqlConnection(connectionStringSource);
         }
 
-        public string TestDynamicSQLConnection()
+        public SqlConnection SqlConnectionSource { get => _sqlConnectionSource; set => _sqlConnectionSource = value; }
+        public SqlConnection SqlConnectionTarget { get => _sqlConnectionTarget; set => _sqlConnectionTarget = value; }
+
+        public string TestDynamicSQLConnectionTarget()
         {
-            _sqlConnection.Open();
-            string test = _sqlConnection.Database.ToString();
-            _sqlConnection.Close();
+            _sqlConnectionTarget.Open();
+            string test = _sqlConnectionTarget.Database.ToString();
+            _sqlConnectionTarget.Close();
             return test;
         }
-        static private string GetConnectionString()
+
+        public void CloseAllConnections()
         {
-            // To avoid storing the connection string in your code, 
-            // you can retrieve it from a configuration file, using the 
-            // System.Configuration.ConfigurationSettings.AppSettings property 
-            return @"Data Source=.\SQL2016;Initial Catalog=AGM_Durmont_2018;Integrated Security=True";
+            SqlConnectionTarget.Close();
+            SqlConnectionTarget.Dispose();
+            SqlConnectionSource.Close();
+            SqlConnectionSource.Dispose();
         }
+
 
 
 
