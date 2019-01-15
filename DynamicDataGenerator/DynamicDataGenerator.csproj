@@ -53,6 +53,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyWords.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -89,6 +90,11 @@
       <Project>{60a14a6f-c9df-44fd-86e3-41c0660f3a72}</Project>
       <Name>DynamicSQLConnector</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icons\cegeka favicon.png" />
+    <Content Include="Icons\cegeka favicon_white.png" />
+    <Content Include="Icons\cegeka_favicon_J99_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

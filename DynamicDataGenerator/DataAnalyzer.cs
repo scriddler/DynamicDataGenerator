@@ -9,12 +9,9 @@ namespace DynamicDataGenerator
 {
     public class DataAnalyzer
     {
-        private List<string> _topicList = new List<string>();
-        private IDictionary<int, List<NAVObject>> _objData = new Dictionary<int, List<NAVObject>>();
-        private IDictionary<int, List<NAVObject>> _referenceData = new Dictionary<int, List<NAVObject>>();
-        private IDictionary<Status, NAVObject> _conversionList = new Dictionary<Status, NAVObject>();
         private IDictionary<string, List<string>> _conversionValues = new Dictionary<string, List<string>>();
         private IDictionary<string, List<string>> _targetValues = new Dictionary<string, List<string>>();
+        private KeyWords _keyWords;
 
         public enum Status
         {
@@ -22,22 +19,23 @@ namespace DynamicDataGenerator
             Failure
         }
 
-        public DataAnalyzer()
+        public DataAnalyzer(KeyWords keyWords)
         {
+            _keyWords = keyWords;
             FillTopicList();
         }
 
-        public List<string> TopicList { get => _topicList; set => _topicList = value; }
-        public IDictionary<int, List<NAVObject>> ObjData { get => _objData; set => _objData = value; }
-        public IDictionary<int, List<NAVObject>> ReferenceData { get => _referenceData; set => _referenceData = value; }
-        public IDictionary<Status, NAVObject> ConversionList { get => _conversionList; set => _conversionList = value; }
+        public List<string> TopicList { get; set; } = new List<string>();
+        public IDictionary<int, List<NAVObject>> ObjData { get; set; } = new Dictionary<int, List<NAVObject>>();
+        public IDictionary<int, List<NAVObject>> ReferenceData { get; set; } = new Dictionary<int, List<NAVObject>>();
+        public IDictionary<Status, NAVObject> ConversionList { get; set; } = new Dictionary<Status, NAVObject>();
 
         public void UpdateData()
         {
             ParseDictionaryData();
 
             //* Update Object Data           
-            foreach (var entry in _objData)
+            foreach (var entry in ObjData)
             {
                 foreach(NAVObject navObj in entry.Value)
                 {
@@ -54,7 +52,7 @@ namespace DynamicDataGenerator
         {
             DynamicSQLConnection dynSQLConnection = null;
 
-            foreach (var entry in _objData)
+            foreach (var entry in ObjData)
             {
                 foreach (NAVObject navObj in entry.Value)
                 {
@@ -217,7 +215,7 @@ namespace DynamicDataGenerator
         private NAVObject GetKeyNavObject(int tableNo)
         {
             NAVObject keyDefinition = null;
-            List<NAVObject> navObjects = _objData[tableNo];
+            List<NAVObject> navObjects = ObjData[tableNo];
 
             foreach (NAVObject navObj in navObjects)
             {
@@ -238,7 +236,7 @@ namespace DynamicDataGenerator
             return newValues[rnd.Next(newValues.Count)];
         }
 
-        private string GetConnectionStringTarget()
+        public string GetConnectionStringTarget()
         {
             // To avoid storing the connection string in your code, 
             // you can retrieve it from a configuration file, using the 
@@ -246,7 +244,7 @@ namespace DynamicDataGenerator
             return @"Data Source=.\SQL2016;Initial Catalog=AGM_Durmont_2018;Integrated Security=True";
         }
 
-        private string GetConnectionStringSource()
+        public string GetConnectionStringSource()
         {
             // To avoid storing the connection string in your code, 
             // you can retrieve it from a configuration file, using the 
@@ -254,20 +252,18 @@ namespace DynamicDataGenerator
             return @"Data Source=.\SQL2016;Initial Catalog=DDC_Dictionary;Integrated Security=True";
         }
 
-
         private void FillTopicList()
         {
-            // TODO: Read from somewhere else...
-            _topicList.Add("NAME");
-            _topicList.Add("ADDRESS");
-            _topicList.Add("DESCRIPTION");
-            _topicList.Add("CITY");
+            foreach(string keyWord in _keyWords.KeyWordList)
+            {
+                TopicList.Add(keyWord);
+            }
         }
 
         private bool NavObjectContainsKeyWord(NAVObject navObj)
         {
             bool found = false;
-            foreach (string k in _topicList)
+            foreach (string k in TopicList)
             {
                 if (navObj.FieldName.ToUpper().Contains(k))
                 {

@@ -11,54 +11,47 @@ namespace DynamicExcelReader
 {
     public class ExcelColumnInfo
     {
-        private int _row;
-
         public ExcelColumnInfo(int row)
         {
-            _row = row;
+            Row = row;
         }
 
-        public int Row { get => _row; set => _row = value; }
-
+        public int Row { get; set; }
     }
 
     public class NAVObject
     {
         #region private members
 
-        private string _id;
-        private int _tableNo;
-        private string _tableName;
-        private int _fieldNo;
-        private string _fieldName;
-        private string _fieldType;
-        private int _relationTableNo;
-        private int _relationTableFieldNo;
-        private string _sqlDataType;
-        private bool _newValue;
         private IDictionary<int, string> _objDescription;
 
         #endregion
 
         #region Getters and Setters
 
-        public string Id { get => _id; set => _id = value; }
-        public int TableNo { get => _tableNo; set => _tableNo = value; }
-        public string TableName { get => _tableName; set => _tableName = value; }
-        public int FieldNo { get => _fieldNo; set => _fieldNo = value; }
-        public string FieldName { get => _fieldName; set => _fieldName = value; }
-        public string FieldType { get => _fieldType; set => _fieldType = value; }
-        public int RelationTableNo { get => _relationTableNo; set => _relationTableNo = value; }
-        public int RelationTableFieldNo { get => _relationTableFieldNo; set => _relationTableFieldNo = value; }
-        public string SqlDataType { get => _sqlDataType; set => _sqlDataType = value; }
-        public bool NewValue { get => _newValue; set => _newValue = value; }
+        public string Id { get; set; }
+        public int TableNo { get; set; }
+        public string TableName { get; set; }
+        public int FieldNo { get; set; }
+        public string FieldName { get; set; }
+        public string FieldType { get; set; }
+        public int RelationTableNo { get; set; }
+        public int RelationTableFieldNo { get; set; }
+        public string SqlDataType { get; set; }
+        public bool NewValue { get; set; }
 
         #endregion
+
+        #region Construction
 
         public NAVObject()
         {
             _objDescription = new Dictionary<int, string>();
         }
+
+        #endregion
+
+        #region Public Functions
 
         public void AddObjDescription(int column, string value)
         {
@@ -67,40 +60,44 @@ namespace DynamicExcelReader
             switch (column)
             {
                 case 1:
-                    _id = SqlFormatted(value);
-                    if (_id.ToUpper() == "K")
+                    Id = SqlFormatted(value);
+                    if (Id.ToUpper() == "K")
                     {
-                        _fieldName = _id;
+                        FieldName = Id;
                     }
                     break;
                 case 2:
-                    _tableNo = Convert.ToInt32(value);
+                    TableNo = Convert.ToInt32(value);
                     break;
                 case 3:
-                    _tableName = SqlFormatted(value);
+                    TableName = SqlFormatted(value);
                     break;
                 case 4:
-                    _fieldNo = Convert.ToInt32(value);
+                    FieldNo = Convert.ToInt32(value);
                     break;
                 case 5:
-                    _fieldName = SqlFormatted(value);
+                    FieldName = SqlFormatted(value);
                     break;
                 case 6:
-                    _fieldType = SqlFormatted(value);
+                    FieldType = SqlFormatted(value);
                     break;
                 case 7:
-                    _relationTableNo = Convert.ToInt32(value);
+                    RelationTableNo = Convert.ToInt32(value);
                     break;
                 case 8:
-                    _relationTableFieldNo = Convert.ToInt32(value);
+                    RelationTableFieldNo = Convert.ToInt32(value);
                     break;
                 case 9:
-                    _sqlDataType = SqlFormatted(value);
+                    SqlDataType = SqlFormatted(value);
                     break;
                 default:
                     break;
             }
         }
+
+        #endregion
+
+        #region Private Functions
 
         private string SqlFormatted(string value)
         {
@@ -108,13 +105,14 @@ namespace DynamicExcelReader
             value = value.Replace("/", "_");
             return value;
         }
+
+        #endregion
     }
-
-
 
     public class SLExcelStatus
     {
         public string Message { get; set; }
+
         public bool Success
         {
             get { return string.IsNullOrWhiteSpace(Message); }
@@ -123,12 +121,8 @@ namespace DynamicExcelReader
 
     public class DynamicExcelReader
     {
-
-        private IDictionary<int, List<NAVObject>> _objData = new Dictionary<int, List<NAVObject>>();
-        private IDictionary<int, List<NAVObject>> _referenceData = new Dictionary<int, List<NAVObject>>();
-
-        public IDictionary<int, List<NAVObject>> ObjData { get => _objData; set => _objData = value; }
-        public IDictionary<int, List<NAVObject>> ReferenceData { get => _referenceData; set => _referenceData = value; }
+        public IDictionary<int, List<NAVObject>> ObjData { get; set; } = new Dictionary<int, List<NAVObject>>();
+        public IDictionary<int, List<NAVObject>> ReferenceData { get; set; } = new Dictionary<int, List<NAVObject>>();
 
         private string GetColumnName(string cellReference)
         {
@@ -255,15 +249,15 @@ namespace DynamicExcelReader
         private void UpdateObjectData(NAVObject navObj)
         {
             //* Insert complete Object into Dictionary
-            if (!_objData.ContainsKey(navObj.TableNo))
+            if (!ObjData.ContainsKey(navObj.TableNo))
             {
                 List<NAVObject> newList = new List<NAVObject>();
                 newList.Add(navObj);
-                _objData.Add(navObj.TableNo, newList);
+                ObjData.Add(navObj.TableNo, newList);
             }
             else
             {
-                List<NAVObject> existingList = _objData[navObj.TableNo];
+                List<NAVObject> existingList = ObjData[navObj.TableNo];
                 existingList.Add(navObj);
             }
         }
@@ -273,15 +267,15 @@ namespace DynamicExcelReader
             //* Update Reference Table
             if (navObj.RelationTableNo != 0)
             {
-                if (!_referenceData.ContainsKey(navObj.RelationTableNo))
+                if (!ReferenceData.ContainsKey(navObj.RelationTableNo))
                 {
                     List<NAVObject> newList = new List<NAVObject>();
                     newList.Add(navObj);
-                    _referenceData.Add(navObj.RelationTableNo, newList);
+                    ReferenceData.Add(navObj.RelationTableNo, newList);
                 }
                 else
                 {
-                    List<NAVObject> existingList = _referenceData[navObj.RelationTableNo];
+                    List<NAVObject> existingList = ReferenceData[navObj.RelationTableNo];
                     existingList.Add(navObj);
                 }
             }
@@ -338,7 +332,6 @@ namespace DynamicExcelReader
         }
 
     }
-
     public class SLExcelData
     {
         public SLExcelStatus Status { get; set; }

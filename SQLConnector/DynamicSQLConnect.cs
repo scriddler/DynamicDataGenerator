@@ -1,31 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.SqlClient;
 
 namespace DynamicSQLConnector
 {
     public class DynamicSQLConnection
     {
-        private SqlConnection _sqlConnectionSource;
-        private SqlConnection _sqlConnectionTarget;
-
         public DynamicSQLConnection(string connectionStringTarget, string connectionStringSource)
         {
-            _sqlConnectionTarget = new SqlConnection(connectionStringTarget);
-            _sqlConnectionSource = new SqlConnection(connectionStringSource);
+            SqlConnectionTarget = new SqlConnection(connectionStringTarget);
+            SqlConnectionSource = new SqlConnection(connectionStringSource);
         }
 
-        public SqlConnection SqlConnectionSource { get => _sqlConnectionSource; set => _sqlConnectionSource = value; }
-        public SqlConnection SqlConnectionTarget { get => _sqlConnectionTarget; set => _sqlConnectionTarget = value; }
+        public SqlConnection SqlConnectionSource { get; set; }
+        public SqlConnection SqlConnectionTarget { get; set; }
 
         public string TestDynamicSQLConnectionTarget()
         {
-            _sqlConnectionTarget.Open();
-            string test = _sqlConnectionTarget.Database.ToString();
-            _sqlConnectionTarget.Close();
+            SqlConnectionTarget.Open();
+            string test = SqlConnectionTarget.Database.ToString();
+            SqlConnectionTarget.Close();
             return test;
         }
 
@@ -36,9 +28,6 @@ namespace DynamicSQLConnector
             SqlConnectionSource.Close();
             SqlConnectionSource.Dispose();
         }
-
-
-
-
+        
     }
 }
