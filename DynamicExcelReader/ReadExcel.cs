@@ -281,50 +281,49 @@ namespace DynamicExcelReader
             }
         }
 
-        public string ReadCellValue(Cell theCell, WorkbookPart wbPart)
+        public string ReadCellValue(Cell cell, WorkbookPart wbPart)
         {
             string value = string.Empty;
 
-            if (theCell != null)
+            if (cell != null)
             {
-                value = theCell.InnerText;
+                value = cell.InnerText;
 
-                if (theCell.DataType != null)
+                if (cell.DataType != null)
                 {
-                    switch (theCell.DataType.Value)
+                    //CellValues cellValues = new CellValues();
+                    if (cell.DataType.Value.Equals(CellValues.SharedString))
                     {
-                        case CellValues.SharedString:
+                        // For shared strings, look up the value in the
+                        // shared strings table.
+                        var stringTable =
+                            wbPart.GetPartsOfType<SharedStringTablePart>()
+                            .FirstOrDefault();
 
-                            // For shared strings, look up the value in the
-                            // shared strings table.
-                            var stringTable =
-                                wbPart.GetPartsOfType<SharedStringTablePart>()
-                                .FirstOrDefault();
-
-                            // If the shared string table is missing, something 
-                            // is wrong. Return the index that is in
-                            // the cell. Otherwise, look up the correct text in 
-                            // the table.
-                            if (stringTable != null)
-                            {
-                                value =
-                                    stringTable.SharedStringTable
-                                    .ElementAt(int.Parse(value)).InnerText;
-                            }
-                            break;
-
-                        case CellValues.Boolean:
-                            switch (value)
-                            {
-                                case "0":
-                                    value = "FALSE";
-                                    break;
-                                default:
-                                    value = "TRUE";
-                                    break;
-                            }
-                            break;
+                        // If the shared string table is missing, something 
+                        // is wrong. Return the index that is in
+                        // the cell. Otherwise, look up the correct text in 
+                        // the table.
+                        if (stringTable != null)
+                        {
+                            value =
+                                stringTable.SharedStringTable
+                                .ElementAt(int.Parse(value)).InnerText;
+                        }
                     }
+                    else if(cell.DataType.Value.Equals(CellValues.Boolean))
+                    {
+                        switch (value)
+                        {
+                            case "0":
+                                value = "FALSE";
+                                break;
+                            default:
+                                value = "TRUE";
+                                break;
+                        }
+                    }
+                    else {  }                                        
                 }
             }
 

@@ -51,12 +51,17 @@ namespace DynamicDataGenerator
         public KeyWords DeSerialize()
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(KeyWords));
+            KeyWords XmlData = new KeyWords();
             string filePath = AppDomain.CurrentDomain.BaseDirectory.ToString() + "Keywords.xml";
-            TextReader reader = new StreamReader(@filePath);
-            object obj = deserializer.Deserialize(reader);
-            KeyWords XmlData = (KeyWords)obj;
-            reader.Close();
 
+            if (File.Exists(filePath))
+            {
+                TextReader reader = new StreamReader(@filePath);
+                object obj = deserializer.Deserialize(reader);
+                XmlData = (KeyWords)obj;
+                reader.Close();
+            }
+            
             return ((KeyWords)XmlData);
         }
     }
